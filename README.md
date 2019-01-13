@@ -128,5 +128,35 @@ const guesses = document.querySelector('.guesses');
 ```
 Constants can be made to store a reference to the results in our paragraphs in our HTML, and are used to insert values into the paragraphs later on in the code. 
 
+#### events
+```javascript
+guessSubmit.addEventListener('click', checkGuess);
+```
+
+We can create an action after a thing has been clicked (for example go to the checkGuess function)
+
+#### loops
+Same as any other programming language
+```javascript
+let resetParas = document.querySelectorAll('.resultParas p');
+for (let i = 0 ; i < resetParas.length ; i++) {
+  resetParas[i].textContent = '';
+}
+```
+
+#### small brief on objects
+In javascript everything is an object. The browser has alot of inbuilt objects but we can actually make our own ones.
+
+```javascript
+const guessField = document.querySelector('.guessField');
+```
+querySelector() method is from the document object. Which allows us to take on piece of information (a css selector) that selects the elements you want to reference to.
+
+guessField contains a reference to input element it now has access to a number of properties in the object and also method (just like how java works. For example
+```javascript
+guessField.focus();
+```
+is a method that is used to ensure the cursor is focused in this location.
+
 
 
