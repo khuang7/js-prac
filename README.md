@@ -158,5 +158,126 @@ guessField.focus();
 ```
 is a method that is used to ensure the cursor is focused in this location.
 
+## 2 Debugging
+Like any programming language errors can occur for different reasons
+
+## 3 Programming basics in js
+Most of this is just programming knowledge (sort of similar to java). Below are just some main points that I didn't know before already from the articles
+
+#### variables
+A variable is a container for a value. To declare a variable we do the following
+```javascript
+let myName;
+let myAge;
+```
+It is dynamically typed like java, meaning we don't have to define a type for each variable.
+
+Then we simply initialize it as normal
+When we call let myName we are making an empty box. It's however not the same as not existing at all. Just a box with no value inside it yet.
+
+```javascript
+let myDog = 'Rover';
+```
+var and let are essentially the same, but let is used in modern versions of javascript which actually works somewhat differently (we don't have to know too much about it). But basically make sure that when we use let, declare the variable first then use it (if we use var it doesn't matter if we declare it first)
+
+arrays are possible
+```javascript
+let myNameArray = ['Chris', 'Bob', 'Jim'];
+```
+
+#### numbers and operators
+Everything in javascript uses the Number data type
+```javascript
+var myInt = 5;
+var myFloat = 6.667;
+myInt;
+myFloat;
+```
+All the operators are basically the same as in any programming language
+
+#### strings
+```javascript
+var string = 'The revolution will not be televised.';
+string;
+```
+#### single quotes vs double quotes
+```javascript
+var sgl = 'Single quotes.';
+var dbl = "Double quotes";
+sgl;
+dbl;
+```
+thankfully both of these have the same affect, so just choose one and be consistent
+
+#### escaping characters in a string
+Say we want to put a quote in our string. Then we have to escape it via \
+```javascript
+var bigmouth = 'I\'ve got no right to take my place...';
+```
+#### concat strings
+```javascript
+var button = document.querySelector('button');
+
+button.onclick = function() {
+  var name = prompt('What is your name?');
+  alert('Hello ' + name + ', nice to see you!');
+}
+```
+Simply using + to concat strings. If we end up concatenating a string and number it will still work as the number will just get converted to a string.
+
+#### useful string methods
+- Finding length of string: string.length
+- Retrieving a specific string character: browserType\[browserType.length-1];
+- Finding a substring inside a string
+- Changing lower to upper case
+
+#### arrays
+Some useful methods for arrays
+- length of array: array.length
+- convert between string and array: string.split(',') --> split by comma
+- add and remove elements: array.pop, array.push
+
+
+## 3 Events
+A simple example of how events work
+```html
+<button>Change color</button>
+```
+
+```javascript
+var btn = document.querySelector('button');
+
+function random(number) {
+  return Math.floor(Math.random()*(number+1));
+}
+
+btn.onclick = function() {
+  var rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+  document.body.style.backgroundColor = rndCol;
+}
+```
+A step by step analysis
+1. Button is a html element
+2. We store a reference to the button in a variable called btn using Document.querySelector()
+3. Theres also a function which returns a random number
+4. btn points to a button element, which can have a number of events happen on it (firing elements). 
+5. So when the user actually clicks button. the button is clicked (method of btn) which then calles the function.
+
+#### node.js
+Different programming languages have their own set of event models and might work differently. A popular one is Node.js that enables devs to use js to build network and server side applications. The code can differ in these situations.
+
+Another example is use javascript to build cross browser add ons using WebExtensions. The point of what this is saying is that events can differ in different programming environments
+
+UP TO HERE: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+
+
+
+## 4 OBJECTS
+
+
+
+
+
+
 
 
