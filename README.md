@@ -73,6 +73,60 @@ Javascript only uses the script element
 [check code apply_javascript.html]
 
 
+we can see that in the head tag we can put a script tag and put a specific script for the javascript.
+However of course we can put the javascript in an external file
+
+```css
+<script src="script.js" async></script>
+```
+Then script.js will just have the javascript stuff
+
+We can also apply javascript inside the HTML
+```html
+<button onclick="createParagraph()">Click me!</button>
+```
+In this example the the onclick handler is used to make the function run. However this is BAD PRACTICE and inefficient.
+
+#### script loading strategies
+Issues occur from getting scripts to load at the right time. Commonly HTML on a page is loaded in order of which it is appear. If we use javascript to manipulate elements on the page, the code won't work if the javascript is loaded and parsed before the HTML.
+Above we see that the javascript is loaded in the head of the document, before the HTML is parsed which can cause an error
+
+For an external script, we use **async** to make sure that the browser to continue the HTMl content once the script tag has been reached.
+FOr an internal script we have to do 
+```javascript
+document.addEventListener("DOMContentLoaded", function() {
+  ...
+});
+```
+Which is used to signify that the HTML body is completely loaded and parsed.
+
+#### async and defer
+There are actually two ways with dealign the problem of a blocking script
+
+async will download the script without blocking rendering the page and will execute as soon as the script finishes downloading. Best to use when the script in the page run indepdently from each other and doesn't depend on other scripts
+
+defer will run the scripts in the order they appear in the page and execute them as soon as the script and content are downloaded
+```html
+<script defer src="js/vendor/jquery.js"></script>
+
+<script defer src="js/script2.js"></script>
+
+<script defer src="js/script3.js"></script>
+```
+
+#### adding variables
+example
+```javascript
+let randomNumber = Math.floor(Math.random() * 100) + 1;
+const guesses = document.querySelector('.guesses');
+```
+We can use let or var to set variables (differences explained later)
+Const for values we don't want to chnage.
+
+```html
+const guesses = document.querySelector('.guesses');
+```
+Constants can be made to store a reference to the results in our paragraphs in our HTML, and are used to insert values into the paragraphs later on in the code. 
 
 
 
