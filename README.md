@@ -270,7 +270,30 @@ Another example is use javascript to build cross browser add ons using WebExtens
 
 UP TO HERE: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
 
+#### web events
+```javascript
+var btn = document.querySelector('button');
 
+btn.onclick = function() {
+  var rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+  document.body.style.backgroundColor = rndCol;
+}
+```
+The onclick property is the event handler property. When we set it to be equal to some code the code will run when the event fires on the button.
+
+We can also set the handler property to be equal to a named function name.
+```javascript
+btn.onclick = bgChange;
+```
+There are many different event handler properties.
+(EXAMPLE IN random-color.html)
+
+#### inline event handlers (AVOID!!)
+```html
+<button onclick="bgChange()">Press me</button>
+```
+The attribute value is literally the javascript code we want to run. 
+These are unmanageable and inefficient. You should never really mix up javascript and HTML as it becomes hard to parse. If we had 100 buttons it would be a nightmare
 
 ## 4 OBJECTS
 
