@@ -295,6 +295,10 @@ There are many different event handler properties.
 The attribute value is literally the javascript code we want to run. 
 These are unmanageable and inefficient. You should never really mix up javascript and HTML as it becomes hard to parse. If we had 100 buttons it would be a nightmare
 
+#### dom level 2 events
+
+
+
 ## 4 OBJECTS
 
 
