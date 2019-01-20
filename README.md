@@ -296,11 +296,251 @@ The attribute value is literally the javascript code we want to run.
 These are unmanageable and inefficient. You should never really mix up javascript and HTML as it becomes hard to parse. If we had 100 buttons it would be a nightmare
 
 #### dom level 2 events
+A new type of event mechanism we have is the level 2 events specification. Which provides browsers with a new function
+- addEventListener()
+It works similarly to event handler but the syntax is different
 
+```javascript
+var btn = document.querySelector('button');
+
+function bgChange() {
+  var rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+  document.body.style.backgroundColor = rndCol;
+}   
+
+btn.addEventListener('click', bgChange);
+```
+Inside addEvenListener there are two parameters. THe name of the event to register the handler, and the function it goes to.
+
+There is also a removeEventListener which can remove a previous added listener.
+```javascript
+btn.removeEventListener('click', bgChange);
+```
+
+This remove function is useful for complex programs to clean up old unused handlers.
+We can just register multiple handlers for the same listeners
+```javascript
+myElement.onclick = functionA;
+myElement.onclick = functionB;
+```
+```javascript
+myElement.addEventListener('click', functionA);
+myElement.addEventListener('click', functionB);
+```
+
+#### which event mechanism to use?
+Obviously HTML inline handlers are the worse and should never be used as mentioned above.
+
+The other two are interchangeable.
+Event handler properties have less power and options but are better for cross browser compatibality
+DOM level 2 events are powerful but can be more complex and less supported.
+
+#### Other Event Concepts
+- Event Objects
+- Preventing Default Behaviour
+- Event Bubbling and Capture
 
 
 ## 4 OBJECTS
+An object is a collection of related data, which usually have variables and functions. (Just like Java)
+Creating an object begins with defining and initializing a variable. Alot of this chapter kind of reviews stuff about objects that are similar to Java. So I will have minimal notes on some of the concepts I don't already know.
 
+#### Basics
+
+The syntax for making objects is like this
+```javascript
+var objectName = {
+  member1Name: member1Value,
+  member2Name: member2Value,
+  member3Name: member3Value
+};
+```
+To access objects properties we use the dot notation
+```javascript
+person.age
+person.interests[1]
+person.bio()
+```
+
+#### Sub-namespaces
+We can make the value of an object member antoher object
+```javascript
+name : {
+  first: 'Bob',
+  last: 'Smith'
+},
+```
+
+Then we access it via
+```javascript
+person.name.first
+person.name.last
+```
+
+#### bracket notation
+Another way to access object properties
+```javascript
+person['age']
+person['name']['first']
+```
+It looks like an array, but instead of numbers we use the name associated with each member's value.
+
+#### Setting object members
+Before we looked at getters now we look at setters
+There are several ways
+```javascript
+person.age = 45;
+person['name']['last'] = 'Cratchit';
+person['eyes'] = 'hazel';
+person.farewell = function() { alert("Bye everybody!"); }
+```
+
+#### this
+The this keyword refers to the current object. 
+```javacscript
+greeting: function() {
+  alert('Hi! I\'m ' + this.name.first + '.');
+}
+```
+In this case arguably, you could use person instead of this. But this ensure it works for this context. Because it's possible that two different person objects instances may have different names.
+Lets looks at this from an example point of view
+```javascript
+var person1 = {
+  name: 'Chris',
+  greeting: function() {
+    alert('Hi! I\'m ' + this.name + '.');
+  }
+}
+
+var person2 = {
+  name: 'Brian',
+  greeting: function() {
+    alert('Hi! I\'m ' + this.name + '.');
+  }
+}
+```
+In this case if we do person1.greeting() and person2.greeting() it will give a different outpu but both refer to the same method.
+
+#### Constructor
+To create an instance of a class. A constructor is needed. Constructors provide the means to create as many objects as we need in an effective way.v . (more in oojs.html code)
+
+#### Alternate way to create objects
+We cano use the object() constructor to create a new object and add stuff on it after
+```javascript
+var person1 = new Object();
+```
+Then we can add properties and methods on the go
+```javascript
+person1.name = 'Chris';
+person1['age'] = 38;
+person1.greeting = function() {
+  alert('Hi! I\'m ' + this.name + '.');
+};
+```
+
+#### Another alternate way to create objects
+Javascript has a built in method called create(). Which is useful if we are only creating a few instances of an object.
+```javascript
+var person2 = Object.create(person1);
+```
+We can see that we created an object based on person1. 
+
+What create actually does is create a new object from a specified prototype object (explained below)
+```javascript
+person2.__proto__
+```
+which returns person1
+
+
+#### prototype based language
+To provide inheritance, objects can have a prototype object. Which is like a template object that it inherits methods and properties from. The properties and methods defined on the prototype property on the Objects constructor functions, not the object instance themselves.
+
+An example
+```javascript
+function Person(first, last, age, gender, interests) {
+  
+  // property and method definitions
+  this.first = first;
+  this.last = last;
+//...
+}
+
+var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);
+```
+
+If we type person1. there is a bunch of autocomplete options in the java console. In this list person() will pop up (the constructor) and also other stuff like name, age and some other weird ones like watch, valueOf which are actually defined in the Person() prototype object which is Object.
+
+person1 inherits from prototype person which inherits from prototype Object.
+If we do
+```javascript
+person1.valueOf()
+```
+Browser will check to see if Person object has valueOf() method. It doesn't clearly. So therefore it checks to see if Person() constructor's prototype object has a value Of. It does so then it is called.
+
+#### object
+If we check out the objects page we see that on the list there a a numebr of properties and methods. Some are inherited but some are not.
+The inherited ones are the ones defined in the PROTOTYPE property. So ones that begin in Object.prototype and not Object.
+The prototypes property value is an object, which is a bucket for storing properties and methods that can be inherited by objects down the line.
+
+In a nutshell. Object.prototype.ANYTHING can be inherited
+Object.ANYTHING cannot be inherited and only used by object itself
+
+
+#### constructor property
+Every constructor function has a prototype porerty whose value is an object containing a constructor property. 
+```javascript
+person1.constructor
+person2.constructor
+```
+Both of these will return the Person() constructor (the original definition of these instances)
+The constructor is a function, so it can be invoked using parantheses. 
+
+A clever trick is to put parentheses at the end of the constructor property to create another object instances from that constructor. 
+```javascript
+var person3 = new person1.constructor('Karen', 'Stephenson', 26, 'female', ['playing drums', 'mountain climbing']);
+```
+This is ueful if we want to create a new instance and not have an eas reference to the original constructor
+
+#### modifying prototypes
+```javascript
+Person.prototype.farewell = function() {
+  alert(this.name.first + ' has left the building. Bye for now!');
+};
+```
+This adds a new method to the constructor's prototype property
+
+If we run person1.farewell(). This will create the alert with the person's name correctly. This is USEFUL
+THe whole inheritance chain is updated dynamiocally and automatticaly, making this new method available on all object instances dervied from the constructor
+
+In the code we define the constructor. Create an instance object from the construtor. Then add a new method to the constructor's prototype. The farewell() method is still available on the person1 object instance. Its members have been automatically update to include the new farewell function.
+
+Its rare to see properties defined on the prototype property. Because it is not flexible. 
+It is a common pattern to define the properties inside the constructor and the methods on the prototype
+
+```javascript
+// Constructor with property definitions
+
+function Test(a, b, c, d) {
+  // property definitions
+}
+
+// First method definition
+
+Test.prototype.x = function() { ... };
+
+// Second method definition
+
+Test.prototype.y = function() { ... };
+
+// etc.
+```
+
+
+#### Inheritance
+#### JSON data
+
+
+## 5 Client Side Web API
 
 
 
