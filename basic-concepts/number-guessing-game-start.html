@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      .lastResult {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Number guessing game</h1>
+
+    <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+
+    <div class="form">
+      <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
+      <input type="submit" value="Submit guess" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+      <p class="guesses"></p>
+      <p class="lastResult"></p>
+      <p class="lowOrHi"></p>
+    </div>
+    <script>
+
+      let randomNumber = Math.floor(Math.random() * 100) + 1; // Selects a random number
+
+      // QUERY SELECTOR
+      // allows us to store a reference to the <p class="guesses"> </p> tags
+      // Returns the first Element within the document that matches the specified selector.
+      // Otherwise null is returned
+      const guesses = document.querySelector('.guesses');
+      const lastResult = document.querySelector('.lastResult');
+      const lowOrHi = document.querySelector('.lowOrHi');
+
+      // Stores references to the form text input and submit button
+      const guessSubmit = document.querySelector('.guessSubmit');
+      const guessField = document.querySelector('.guessField');
+
+
+      let guessCount = 1;
+      let resetButton;
+
+
+      function checkGuess() {
+
+        // Calls the Number() Constructor, just to make sure its deifnitely a number
+        // user Guess sets its value to the current value entered in the text field
+        let userGuess = Number(guessField.value);
+
+
+        //
+        if (guessCount === 1) {
+          // .textContent literally adds text to the guesses tag <p class="guesses"> ... </p>
+          guesses.textContent = 'Previous guesses: ';
+        }
+        guesses.textContent += userGuess + ' ';
+
+
+        if (userGuess === randomNumber) {
+          lastResult.textContent = 'Congratulations! You got it right!';
+          lastResult.style.backgroundColor = 'green';
+          lowOrHi.textContent = '';
+          setGameOver();
+        } else if (guessCount === 10) {
+          lastResult.textContent = '!!!GAME OVER!!!';
+          setGameOver();
+        } else {
+          lastResult.textContent = 'Wrong!';
+          lastResult.style.backgroundColor = 'red';
+          if(userGuess < randomNumber) {
+            lowOrHi.textContent = 'Last guess was too low!';
+          } else if(userGuess > randomNumber) {
+            lowOrHi.textContent = 'Last guess was too high!';
+          }
+        }
+
+        guessCount++;
+        guessField.value = '';
+        guessField.focus();
+      }
+      // For the case when we actually click the button, on out checkGuess button
+      guessSubmit.addEventListener('click', checkGuess);
+
+
+      function setGameOver() {
+
+        // disable the fields and submit buttons
+        guessField.disabled = true;
+        guessSubmit.disabled = true;
+
+        // Resetting and creates a new <button> element with its text as
+        // start new game
+        resetButton = document.createElement('button');
+        resetButton.textContent = 'Start new game';
+
+        // Adds it to the bottom of the html (append child)
+        document.body.appendChild(resetButton);
+
+        // Sets an event listener so that hwne itis clicked resetGame() is ran.
+        resetButton.addEventListener('click', resetGame);
+      }
+
+
+      function resetGame() {
+        // change the guesscount back to 1
+        guessCount = 1;
+
+        // Empties all the text out of information paragraphs
+        // Pretty cool way of using loops over every <p> inside a div tag
+        const resetParas = document.querySelectorAll('.resultParas p');
+        for (let i = 0 ; i < resetParas.length ; i++) {
+          resetParas[i].textContent = '';
+        }
+
+
+        // Removes reset button
+        resetButton.parentNode.removeChild(resetButton);
+
+        // Enables the fields again
+        guessField.disabled = false;
+        guessSubmit.disabled = false;
+        guessField.value = '';
+        guessField.focus(); // puts cursor at appropriate location
+
+        // Removes our changed background colour
+        lastResult.style.backgroundColor = 'white';
+
+        // Generate a new random number so we don't use the same number.
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+      }
+
+    </script>
+  </body>
+</html>
